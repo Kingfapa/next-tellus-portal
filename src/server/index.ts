@@ -4,6 +4,7 @@ loadEnvConfig(
   process.env.NODE_ENV !== "production"
 );
 import { logger } from "../lib/logger";
+import { loadConfig } from "../lib/config";
 
 logger.info(
   `Starting ${process.env.npm_package_version} in dir ${process.cwd()}`
@@ -34,15 +35,13 @@ const nextHandle = app.getRequestHandler();
     server.all("*", (req, res) => nextHandle(req, res));
 
     if (!dev) {
+      const { HTTPS_SSL_CERT, HTTPS_SSL_KEY } = loadConfig(process.env.NODE_ENV);
+
       https
         .createServer(
           {
-            cert: await readFile(
-              process.env.HTTPS_SSL_CERT || "./certs/cert/tellus-acc.sll.se.cer"
-            ),
-            key: await readFile(
-              process.env.HTTPS_SSL_KEY || "./certs/key/tellus-acc.sll.se.key"
-            ),
+            cert: await readFile(HTTPS_SSL_CERT!.toString()),
+            key: await readFile(HTTPS_SSL_KEY!.toString()),
           },
           server
         )
@@ -54,8 +53,7 @@ const nextHandle = app.getRequestHandler();
     await queueHandler.start();
     console.log(`> Ready on http://localhost:${port}`);
   } catch (error) {
-    logger.error(error);
-    console.error(error);
+    logger.error("Could not start the app, please double check your .env.local file")
     process.exit(1);
   }
 })();

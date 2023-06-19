@@ -11,6 +11,7 @@ export class TellusAPI {
   private instance: AxiosInstance;
   constructor() {
     const { ENDPOINT, USERNAME, PASSWORD } = loadConfig(process.env.NODE_ENV);
+    logger.info(`Loaded Endpoint: ${ENDPOINT}`);
     this.instance = axios.create({
       baseURL: ENDPOINT,
       auth: {
