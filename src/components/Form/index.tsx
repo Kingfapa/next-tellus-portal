@@ -36,7 +36,7 @@ import { FormField } from "./FormField";
 
 
 export const FormLayout = () => {
-  const attachmentRef = useRef(null);
+  const attachmentRef = useRef<HTMLInputElement>(null);
   const [recordNumber, setRecordNumber] = useState("");
   const [showFileError, setShowFileError] = useState(false);
   const {
@@ -106,8 +106,8 @@ export const FormLayout = () => {
           console.log(error);
           if (error instanceof AxiosError) {
             if (
-              error.response.status === 500 &&
-              error.response.data.message === "Added to queue"
+              error.response?.status === 500 &&
+              error.response?.data.message === "Added to queue"
             ) {
               // show added to queue msg
               showIsAddedToQueue();
@@ -408,6 +408,7 @@ export const FormLayout = () => {
                       setShowFileError(false);
                       props.setSubmitting(true);
                       const fileMap = await Promise.all(
+                        // @ts-expect-error TypeError that we need to fix
                         Array.from(e.target.files).map(async (file) => ({
                           name: file.name,
                           type: file.type,
@@ -450,7 +451,7 @@ export const FormLayout = () => {
                         w="40"
                         leftIcon={<AttachmentIcon />}
                         variant="outline"
-                        onClick={() => attachmentRef.current.click()}
+                        onClick={() => attachmentRef.current?.click()}
                       >
                         Bifoga
                       </Button>
@@ -477,9 +478,9 @@ export const FormLayout = () => {
                           temp.user_name_2 = props.values.user_name;
                           temp.u_place_of_work_2 = props.values.u_place_of_work;
 
-                          temp.caller = props.values.u_opened_for;
+                          temp.caller = props.values.u_opened_for || "";
                           temp.user_name = props.values.user_name_2;
-                          temp.u_place_of_work = props.values.u_place_of_work_2;
+                          temp.u_place_of_work = props.values.u_place_of_work_2 || "";
 
                           props.setValues(temp);
                         } else {
@@ -497,7 +498,7 @@ export const FormLayout = () => {
                   </Flex>
                 </FormControl>
 
-                {props.values.files.length > 0 && (
+                {props.values.files && props.values.files.length > 0 && (
                   <VStack
                     border="1px"
                     borderColor="inherit"
@@ -525,7 +526,7 @@ export const FormLayout = () => {
                           onClick={() => {
                             props.setFieldValue(
                               "files",
-                              props.values.files.filter(
+                              props.values.files && props.values.files.filter(
                                 ({ name }) => name !== file.name
                               )
                             );

@@ -36,7 +36,7 @@ const FileUpload: React.FC<{
   placeholder: string;
   field: FieldInputProps<any>;
 }> = (props) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   return (
     <InputGroup>
       <InputLeftElement pointerEvents="none" children={<AttachmentIcon />} />
@@ -48,7 +48,7 @@ const FileUpload: React.FC<{
       ></input>
       <Input
         onClick={() => {
-          inputRef.current.click();
+          inputRef.current?.click();
         }}
         placeholder={props.placeholder || "Your file ..."}
       />
@@ -67,7 +67,7 @@ export const FormField: React.FC<IFormFieldProps> = (props) => {
           >
             <FormLabel>{props.label}</FormLabel>
             {props.type === "file" && (
-              <FileUpload field={field} placeholder={props.placeholder} />
+              <FileUpload field={field} placeholder={props.placeholder || ""} />
             )}
             {props.type !== "file" && (
               <props.as {...field} {...props}>
@@ -77,7 +77,7 @@ export const FormField: React.FC<IFormFieldProps> = (props) => {
             <FormHelperText>{props.helpertext}</FormHelperText>
             <FormErrorMessage>
               {form.errors[props.name] &&
-                (props.error_msg || form.errors[props.name].toString())}
+                (props.error_msg || form.errors[props.name]?.toString())}
             </FormErrorMessage>
           </FormControl>
         );

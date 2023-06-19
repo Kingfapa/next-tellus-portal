@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(200).json(data);
   } catch (err) {
     if (err instanceof AxiosError) {
-      logger.error((err as AxiosError).response.data);
+      logger.error((err as AxiosError).response?.data);
     }
     res.status(500).json({ statusCode: 500, message: (err as Error).message });
   }
