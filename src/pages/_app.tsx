@@ -3,7 +3,9 @@ import type { AppProps } from "next/app";
 import App, { AppContext } from 'next/app'
 
 
-function MyApp({ Component, pageProps }: AppProps) {
+
+function MyApp({ Component, pageProps, version, NODE_ENV }: AppProps & { version: string, NODE_ENV: string }) {
+  console.debug({ version, NODE_ENV });
   return (
     <ChakraProvider>
       <Component {...pageProps} />
@@ -22,7 +24,8 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     return
   }
 
-  return { ...appProps }
+
+  return { ...appProps, version: process.env.npm_package_version, NODE_ENV: process.env.NODE_ENV }
 }
 
 export default MyApp;
