@@ -3,7 +3,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "dist",
-    "lib": ["es2021"],
+    "lib": [
+      "es2021"
+    ],
     "target": "es2021",
     "strict": true,
     "esModuleInterop": true,
@@ -13,5 +15,7 @@
     "noEmit": false,
     "baseUrl": "."
   },
-  "include": ["src/server/**/*.ts"]
+  "include": [
+    "src/server/**/*.ts"
+  ]
 }
