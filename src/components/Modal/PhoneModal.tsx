@@ -16,6 +16,7 @@ import {
   LinkOverlay,
 } from "@chakra-ui/react";
 import React from "react";
+import { useState, useEffect } from "react"
 
 interface IPhoneNumberBoxProps {
   name: string;
@@ -43,20 +44,16 @@ export const PhoneModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ isOpen, onClose }) => {
-  const phoneNumbers: IPhoneNumberBoxProps[] = [
-    { name: "Danderyds Sjukhus", number: "08 123 556 00" },
-    { name: "Hälso- och sjukvårdsförvaltningen", number: "08 123 177 77" },
-    { name: "Karolinska Universitetssjukhuset", number: "08 123 777 77" },
-    { name: "Regionledningskontoret", number: "08 123 177 77" },
-    { name: "Reservkort", number: "08 123 700 20" },
-    { name: "Serviceförvaltningen", number: "08 123 177 77" },
-    { name: "Södersjukhuset AB", number: "08 616 13 00" },
-    { name: "Södertälje sjukhus", number: "08 123 177 77" },
-    {
-      name: "Vårdaktörer med vårdavtal samt studenter",
-      number: "08 123 145 10",
-    },
-  ];
+  const [phoneNumbers, setPhoneNumbers] = useState<IPhoneNumberBoxProps[]>([]);
+
+  useEffect(() => {
+    fetch('/api/phoneNumbers')
+      .then((res) => res.json())
+      .then((data) => {
+        setPhoneNumbers(data)
+      })
+  }, [])
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
