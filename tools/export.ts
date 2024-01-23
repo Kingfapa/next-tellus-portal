@@ -19,15 +19,16 @@ import { exec, spawn } from "child_process";
   try {
     await mkdirp(BUILD_DIR);
 
-    const foldersToCopy = [
+    const toCopy = [
       "dist",
       ".next",
       "public",
       "package.json",
       ".env.local",
+      "schema",
     ];
 
-    foldersToCopy.forEach(async (contentName) => {
+    toCopy.forEach(async (contentName) => {
       await copy(contentName, path.join(BUILD_DIR, contentName));
     });
 
