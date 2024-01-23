@@ -16,9 +16,10 @@ import {
   LinkOverlay,
 } from "@chakra-ui/react";
 import React from "react";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
+import { IPhoneNumberApiResponse } from "src/pages/api/phoneNumbers";
 
-interface IPhoneNumberBoxProps {
+export interface IPhoneNumberBoxProps {
   name: string;
   number: string;
 }
@@ -47,12 +48,15 @@ export const PhoneModal: React.FC<{
   const [phoneNumbers, setPhoneNumbers] = useState<IPhoneNumberBoxProps[]>([]);
 
   useEffect(() => {
-    fetch('/api/phoneNumbers')
-      .then((res) => res.json())
-      .then((data) => {
-        setPhoneNumbers(data)
-      })
-  }, [])
+    const getPhoneNumbers = async () => {
+      const response = await fetch("/api/phoneNumbers");
+      setPhoneNumbers(
+        ((await response.json()) as IPhoneNumberApiResponse).records
+      );
+    };
+
+    getPhoneNumbers();
+  }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -64,9 +68,10 @@ export const PhoneModal: React.FC<{
         <ModalCloseButton />
         <ModalBody>
           <Grid gap="4">
-            {phoneNumbers.map((phoneInfo) => (
-              <PhoneNumberBox key={phoneInfo.name} {...phoneInfo} />
-            ))}
+            {phoneNumbers &&
+              phoneNumbers.map((phoneInfo) => (
+                <PhoneNumberBox key={phoneInfo.name} {...phoneInfo} />
+              ))}
           </Grid>
         </ModalBody>
 
