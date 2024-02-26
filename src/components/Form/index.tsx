@@ -34,7 +34,6 @@ import { IResult } from "src/lib/TellusAPI";
 import { PhoneModal } from "../Modal/PhoneModal";
 import { FormField } from "./FormField";
 
-
 export const FormLayout = () => {
   const attachmentRef = useRef<HTMLInputElement>(null);
   const [recordNumber, setRecordNumber] = useState("");
@@ -215,7 +214,6 @@ export const FormLayout = () => {
                   label="Telefonnummer"
                   as={Input}
                 />
-
               </GridItem>
               <GridItem>
                 <FormField
@@ -281,18 +279,22 @@ export const FormLayout = () => {
               >
                 <Collapse in={!!props.values.call_type}>
                   <Link onClick={showPhoneModal}>
-                    {props.values.call_type === "incident" ? <Alert status="error">
-                      <AlertIcon />
-                      <AlertDescription>
-                        Om ditt ärende är brådskande ber vid dig att kontakta
-                        oss via telefon, klicka här!
-                      </AlertDescription>
-                    </Alert> : <Alert status="info">
-                      <AlertIcon />
-                      <AlertDescription>
-                        Du kan även nå oss via telefon, klicka här!
-                      </AlertDescription>
-                    </Alert>}
+                    {props.values.call_type === "incident" ? (
+                      <Alert status="error">
+                        <AlertIcon />
+                        <AlertDescription>
+                          Om ditt ärende är brådskande ber vid dig att kontakta
+                          oss via telefon, klicka här!
+                        </AlertDescription>
+                      </Alert>
+                    ) : (
+                      <Alert status="info">
+                        <AlertIcon />
+                        <AlertDescription>
+                          Du kan även nå oss via telefon, klicka här!
+                        </AlertDescription>
+                      </Alert>
+                    )}
                   </Link>
                 </Collapse>
               </GridItem>
@@ -475,12 +477,13 @@ export const FormLayout = () => {
                           let temp = { ...props.values };
 
                           temp.u_opened_for = props.values.caller;
-                          temp.user_name_2 = props.values.user_name;
+                          temp.user_name_2 = props.values.user_name || "SAKNAS";
                           temp.u_place_of_work_2 = props.values.u_place_of_work;
 
                           temp.caller = props.values.u_opened_for || "";
-                          temp.user_name = props.values.user_name_2;
-                          temp.u_place_of_work = props.values.u_place_of_work_2 || "";
+                          temp.user_name = props.values.user_name_2 || "SAKNAS";
+                          temp.u_place_of_work =
+                            props.values.u_place_of_work_2 || "";
 
                           props.setValues(temp);
                         } else {
@@ -494,7 +497,6 @@ export const FormLayout = () => {
                     >
                       Skicka
                     </Button>
-
                   </Flex>
                 </FormControl>
 
@@ -526,9 +528,10 @@ export const FormLayout = () => {
                           onClick={() => {
                             props.setFieldValue(
                               "files",
-                              props.values.files && props.values.files.filter(
-                                ({ name }) => name !== file.name
-                              )
+                              props.values.files &&
+                                props.values.files.filter(
+                                  ({ name }) => name !== file.name
+                                )
                             );
                           }}
                         />
@@ -537,12 +540,8 @@ export const FormLayout = () => {
                   </VStack>
                 )}
               </GridItem>
-
             </Grid>
-            <PhoneModal
-              isOpen={isPhoneModalOpen}
-              onClose={hidePhoneModal}
-            />
+            <PhoneModal isOpen={isPhoneModalOpen} onClose={hidePhoneModal} />
           </Form>
         );
       }}
