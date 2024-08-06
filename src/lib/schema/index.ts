@@ -33,14 +33,14 @@ if (typeof window !== "undefined") {
   });
 }
 
-const isProd = process.env.NODE_ENV === "production"
+const isProd = process.env.NODE_ENV === "production";
 
 export const configSchema = yup.object({
   ENDPOINT: yup.string().required(),
   USERNAME: yup.string().required(),
   PASSWORD: yup.string().required(),
-  HTTPS_SSL_CERT: isProd ? yup.string().required() : yup.string().optional(),
-  HTTPS_SSL_KEY: isProd ? yup.string().required() : yup.string().optional()
+  HTTPS_SSL_CERT: yup.string().optional(),
+  HTTPS_SSL_KEY: yup.string().optional(),
 });
 
 const phoneRegExp =
