@@ -37,7 +37,7 @@ export const InfoModal: React.FC<{
             <TabList>
               <Tab>Kontaktformuläret</Tab>
               <Tab>SAM och Regionalt Nät</Tab>
-              <Tab>eTjänsteKort</Tab>
+              <Tab>eTjänstekort</Tab>
             </TabList>
 
             <TabPanels>
@@ -75,13 +75,9 @@ export const InfoModal: React.FC<{
                   arbetsplats.
                 </Text>
                 <br />
-                <Link as="b" color={"blue.500"}
-                  href="https://vardgivarguiden.se/it-stod/e-tjanster-och-system/sllnet-och-sam/"
-                  isExternal
-                >
+                <Text as="b">
                   Kommunalanställda samt Privata vårdgivare med vårdavtal
-                  <ExternalLinkIcon mx="2px" />
-                </Link>
+                </Text>
                 <Text>
                   För att nå Regionalt Nät krävs det att din arbetsplats är
                   ansluten till Regionalt Nät eller att du kopplar upp dig via
@@ -96,8 +92,9 @@ export const InfoModal: React.FC<{
                 </Text>
                 <br />
                 <Text as="b">
-                  <Link color={"blue.500"}
-                    href="https://vardgivarguiden.se/it-stod/etjanstekort/bestalla/"
+                  <Link
+                    color={"blue.500"}
+                    href="https://vardgivarguiden.se/it-stod/etjanstekort/information-om-e-tjanstekort-for-vardgivare/"
                     isExternal
                   >
                     Kommunalanställda samt Privata vårdgivare med vårdavtal
